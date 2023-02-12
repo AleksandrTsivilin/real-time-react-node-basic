@@ -1,47 +1,46 @@
-import React, {useEffect, useState} from "react";
-import { Container, Card, Form, Button, Row } from "react-bootstrap";
-import { receive, send, serverData } from "../../Http/messageAPI";
+import React, {useEffect, useState} from 'react'
+import {Container, Card, Form, Button, Row} from 'react-bootstrap'
 
-const LongPull = () =>{
-    const [messages, setMessages] = useState([])
+import { send, serverData, setConnect } from '../../Http/messageAPI'
+
+const EventSource = () => {
     const [value, setValue] = useState('')
+    const [messages, setMessages] = useState([])
     const [isValidServer, setIsValidServer] = useState(false)
-    const [serverInfo, setServerInfo] = useState({})
 
     useEffect(()=>{
-        serverData().then(data=>{            
-            setServerInfo(data)
-            if(data.type !== 'longpull') return                
+        serverData().then(data=>{
+            console.log(data)
+            if (data.type !== 'eventsource' ) return
             setIsValidServer(true)
             subscribe()
         })
     },[])
 
-    const subscribe = async () =>{        
-        try{
-            const data =  await receive()             
-            setMessages(prev => [data.data, ...prev])
-            await subscribe()
-        }catch(e){
-            console.log(e)
-            setTimeout(()=>{
-                subscribe()
-            },500)
-        }
-    }
-
-    const onSend = () =>{
+    const onSend = () => {
         const dateTime= new Date(Date.now())
         send({text:value, date:dateTime})
             .then(responce=>console.log(responce))
     }
 
-    if (!isValidServer) return (
-        <h6>Server is not correct. Current server is {serverInfo?.type}</h6>
-    )
+    const subscribe = async () => {
+        await setConnect((event=>{
+            console.log('sub data',event.data)
+            const data = JSON.parse(event.data)
+            setMessages(prev=>[{
+                text:data['text'],
+                date:data['date']
+            }, ...prev])
+        }));
+                
+    }
 
+    if (!isValidServer) return (
+        <h6>Server is not correct</h6>
+    )
     return (
         <Container className="d-flex flex-column align-items-center mt-5">
+            <h2>Event Source</h2>
             <Card style={{width:500}} className='p-5 border-5 border-success'>
                 <Form className="d-flex flex-column">
                     <Form.Control 
@@ -71,4 +70,4 @@ const LongPull = () =>{
     )
 }
 
-export default LongPull
+export default EventSource

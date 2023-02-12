@@ -1,6 +1,7 @@
 import React from 'react'
 import {useNavigate} from 'react-router-dom'
 import { Navbar, Nav, Button} from 'react-bootstrap'
+import { Routes } from '../../Utils/constans'
 
 const NavBar = () =>{
     const navigate = useNavigate()
@@ -10,9 +11,9 @@ const NavBar = () =>{
                 <Nav.Link href="/">REAL-TIME-CLIENT-SERVER-BASIC</Nav.Link>
             </Nav>
             <Nav className='mr-5'>
-                <Button className='mr-2' variant={'outline-light'} size={'sm'} onClick={()=>navigate('/longpull')}>LongPull</Button>
-                {/* <Button className='mr-2' variant={'outline-light'} size={'sm'} onClick={()=>navigate('/')}>Second</Button> */}
-                <Button className='mr-2' variant={'outline-light'} size={'sm'} onClick={()=>navigate('/websocket')}>WebSocket</Button>
+                <Button className='mr-2' variant={'outline-light'} size={'sm'} onClick={()=>navigate(Routes.LONG_PULL)}>LongPull</Button>
+                <Button className='mr-2' variant={'outline-light'} size={'sm'} onClick={()=>navigate(Routes.EVENT_SOURCE)}>EventSource</Button>
+                <Button className='mr-2' variant={'outline-light'} size={'sm'} onClick={()=>navigate(Routes.WEBSOCKET)}>WebSocket</Button>
             </Nav>
         </Navbar>
     )
