@@ -1,6 +1,7 @@
 
 
 export const Routes = {
-    LONGPULL : '/longpull',
+    LONG_PULL : '/longpull',
+    EVENT_SOURCE : '/eventsource',
     WEBSOCKET : '/websocket'
 }

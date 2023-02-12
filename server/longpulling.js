@@ -11,6 +11,9 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
+app.get('/info',(req,res)=>{
+    res.status(200).json({type:'longpull'})
+})
 app.get('/get-message',(req, res)=>{
     emitter.once('newMessage', (message)=>{
         res.json(message)
