@@ -1,21 +1,16 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useContext} from "react";
 import { Container, Card, Form, Button, Row } from "react-bootstrap";
-import { receive, send, serverData } from "../../Http/messageAPI";
+import { ServerContext } from "../../App";
+import { receive, send} from "../../Http/messageAPI";
 
 const LongPull = () =>{
     const [messages, setMessages] = useState([])
     const [value, setValue] = useState('')
-    const [isValidServer, setIsValidServer] = useState(false)
-    const [serverInfo, setServerInfo] = useState({})
+    const {getInfo} = useContext(ServerContext)
 
     useEffect(()=>{
-        serverData().then(data=>{            
-            setServerInfo(data)
-            if(data.type !== 'longpull') return                
-            setIsValidServer(true)
-            subscribe()
-        })
-    },[])
+        if(getInfo?.info === 'longpull') subscribe()  
+    },[getInfo?.title])
 
     const subscribe = async () =>{        
         try{
@@ -36,8 +31,10 @@ const LongPull = () =>{
             .then(responce=>console.log(responce))
     }
 
-    if (!isValidServer) return (
-        <h6>Server is not correct. Current server is {serverInfo?.type}</h6>
+    if (getInfo?.title !== 'websocket') return (
+        <Container className="d-flex justify-content-center mt-5">
+            <h6>Server is not correct. Current server is {getInfo?.title}. Switch to longpull.js server</h6>
+        </Container>
     )
 
     return (

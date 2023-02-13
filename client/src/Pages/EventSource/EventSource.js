@@ -1,21 +1,17 @@
-import React, {useEffect, useState} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import {Container, Card, Form, Button, Row} from 'react-bootstrap'
-
-import { send, serverData, setConnect } from '../../Http/messageAPI'
+import { ServerContext } from '../../App'
+import { send, setConnect } from '../../Http/messageAPI'
 
 const EventSource = () => {
+    const {getInfo} = useContext(ServerContext)
     const [value, setValue] = useState('')
     const [messages, setMessages] = useState([])
-    const [isValidServer, setIsValidServer] = useState(false)
+    
 
     useEffect(()=>{
-        serverData().then(data=>{
-            console.log(data)
-            if (data.type !== 'eventsource' ) return
-            setIsValidServer(true)
-            subscribe()
-        })
-    },[])
+        if (getInfo?.title === 'eventsource') subscribe()
+    },[getInfo?.title])
 
     const onSend = () => {
         const dateTime= new Date(Date.now())
@@ -35,9 +31,13 @@ const EventSource = () => {
                 
     }
 
-    if (!isValidServer) return (
-        <h6>Server is not correct</h6>
+    if (getInfo?.title !== 'eventsource') return (
+        <Container className="d-flex justify-content-center mt-5">
+            <h6>Server is not correct. Current server is {getInfo?.title}. Switch to websocket.js server</h6>
+        </Container>
     )
+
+    
     return (
         <Container className="d-flex flex-column align-items-center mt-5">
             <h2>Event Source</h2>
@@ -60,8 +60,8 @@ const EventSource = () => {
                 <Row key={index}  className="d-flex flex-column mt-2">
                     <span className="d-flex align-self-end mr-2 text-sm" >{message.date}</span>
                     <Card style={{width:500}} className='p-2 mt-2'>
-                    {message.text}
-                </Card>
+                        {message.text}
+                    </Card>
 
                 </Row>)
             }
