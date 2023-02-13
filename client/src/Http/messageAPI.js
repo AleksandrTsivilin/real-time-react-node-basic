@@ -2,6 +2,7 @@ import { $host } from "./http"
 
 export const serverData = async () =>{
     const data = await $host.get('/info')
+    
     return data.data
 }
 export const send = async (message) =>{

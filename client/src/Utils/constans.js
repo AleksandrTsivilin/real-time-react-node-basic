@@ -5,3 +5,4 @@ export const Routes = {
     EVENT_SOURCE : '/eventsource',
     WEBSOCKET : '/websocket'
 }
+
