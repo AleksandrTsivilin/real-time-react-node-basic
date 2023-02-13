@@ -9,9 +9,13 @@ const ServerInfo = () =>{
     
     useEffect(()=>{
         serverData().then(data=>{
+            
             setInfo({title:data.type})
             setIsLoading(true)
-        })
+        }).catch(e=>{
+            console.log('error',e); 
+            setInfo({title:'websocket'});
+            setIsLoading(true)})
     },[])
     return (
         <Container className="d-flex justify-content-center mt-5">

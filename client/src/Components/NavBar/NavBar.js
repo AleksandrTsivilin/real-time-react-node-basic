@@ -11,7 +11,7 @@ const NavBar = () =>{
                 <Nav.Link href="/">REAL-TIME-CLIENT-SERVER-BASIC</Nav.Link>
             </Nav>
             <Nav className='mr-5'>
-                <Button className='mr-2' variant={'outline-light'} size={'sm'} onClick={()=>navigate(Routes.LONG_PULL)}>LongPull</Button>
+                <Button className='mr-2' variant={'outline-light'} size={'sm'} onClick={()=>navigate(Routes.LONG_PULL)}>LongPolling</Button>
                 <Button className='mr-2' variant={'outline-light'} size={'sm'} onClick={()=>navigate(Routes.EVENT_SOURCE)}>EventSource</Button>
                 <Button className='mr-2' variant={'outline-light'} size={'sm'} onClick={()=>navigate(Routes.WEBSOCKET)}>WebSocket</Button>
             </Nav>
